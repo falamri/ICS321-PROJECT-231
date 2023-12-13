@@ -2,10 +2,12 @@ package com.example.blooddonationapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     public void onLoginButtonClick(View view) {
         // You can add your login logic here or navigate to the login activity
         // For example:
+
         Intent loginIntent = new Intent(this, LoginActivity.class);
         startActivity(loginIntent);
     }
