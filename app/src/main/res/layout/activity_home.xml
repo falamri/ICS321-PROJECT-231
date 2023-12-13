@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Donation requests -->
+    <TextView
+        android:id="@+id/donationRequestsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/centerLayout1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
+        android:text="Donation requests"
+        android:textSize="20sp" />
+
+    <!-- Card with Name, Location, Donate -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/donationCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/donationRequestsText"
+        android:layout_margin="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="154dp"
+            android:padding="16dp">
+
+            <!-- Name -->
+            <TextView
+                android:id="@+id/nameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="18sp" />
+
+            <!-- Location -->
+            <TextView
+                android:id="@+id/locationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nameText"
+                android:layout_marginTop="8dp"
+                android:text="Location"
+                android:textSize="16sp" />
+
+            <!-- Donate -->
+            <TextView
+                android:id="@+id/donateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Donate"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Bottom nav-bar-like shape -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <!-- Clickable pictures -->
+        <ImageButton
+            android:id="@+id/findDonorsButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background" />
+
+        <ImageButton
+            android:id="@+id/donatesButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background" />
+
+        <!-- Bottom change ^ to appropriate @drawable/search  -->
+
+        <ImageButton
+            android:id="@+id/orderBloodsButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background" />
+
+        <ImageButton
+            android:id="@+id/reportButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background" />
+
+        <ImageButton
+            android:id="@+id/requestButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/centerLayout"
+        android:layout_width="375dp"
+        android:layout_height="129dp"
+        android:layout_above="@+id/centerLayout1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginBottom="29dp"
+        >
+
+        <!-- Clickable pictures -->
+        <ImageButton
+            android:id="@+id/findDonorsButtonMiddleHomePage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background"
+            android:text="Shape 1"
+            />
+
+        <ImageButton
+            android:id="@+id/donatesButtonMiddleHomePage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background" />
+
+        <ImageButton
+            android:id="@+id/orderBloodsButtonMiddleHomePage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/centerLayout1"
+        android:layout_width="334dp"
+        android:layout_height="166dp"
+        android:layout_centerInParent="true">
+
+        <!-- Clickable pictures -->
+        <ImageButton
+            android:id="@+id/reportButtonMiddleHomePage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background" />
+
+        <ImageButton
+            android:id="@+id/requestButtonMiddleHomePage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background" />
+    </LinearLayout>
+
+</RelativeLayout>
