@@ -4,10 +4,10 @@ public class Recipient extends Person {
     private String recipientHistory;
     private String medicalHistory;
 
-    public Recipient(int id, String username, String password, String email, String fname,
-                 String lname, String dob, String num, String address, String healthStatus, String weight,
+    public Recipient(int id, String password, String email, String fname,
+                 String lname, String dob, String num, String address, int weight,String bloodType,
                      String recipientHistory, String medicalHistory) {
-        super(id, username, password, email,fname,lname,dob,num,address,healthStatus,weight);
+        super(id, password, email,fname,lname,dob,num,address,weight,bloodType);
         this.recipientHistory = recipientHistory;
         this.medicalHistory = medicalHistory;
     }

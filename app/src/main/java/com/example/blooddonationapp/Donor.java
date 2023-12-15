@@ -4,9 +4,10 @@ public class Donor extends Person{
         private String donationHistory;
         private String medicalHistory;
 
-        public Donor(int id, String username, String password, String email, String fname,
-                     String lname, String dob, String num, String address, String healthStatus, String weight, String donationHistory, String medicalHistory) {
-            super(id, username, password, email,fname,lname,dob,num,address,healthStatus,weight);
+        public Donor(int id, String password, String email, String fname,
+                     String lname, String dob, String num, String address,  int weight,String bloodType, String
+                             donationHistory, String medicalHistory) {
+            super(id, password, email,fname,lname,dob,num,address,weight,bloodType);
             this.donationHistory = donationHistory;
             this.medicalHistory = medicalHistory;
         }

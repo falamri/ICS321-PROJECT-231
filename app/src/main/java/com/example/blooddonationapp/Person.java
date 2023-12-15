@@ -12,12 +12,12 @@ public class Person {
     private String num;
     private String address;
     private String healthStatus;
-    private String Weight;
+    private int Weight;
+    private String bloodType;
 
-    public Person(int id, String username, String password, String email, String fname,
-                  String lname, String dob, String num, String address, String healthStatus, String weight) {
+    public Person(int id, String password, String email, String fname,
+                  String lname, String dob, String num, String address, int weight,String bloodType) {
         this.id = id;
-        this.username = username;
         this.password = password;
         this.email = email;
         this.fname = fname;
@@ -25,13 +25,77 @@ public class Person {
         this.dob = dob;
         this.num = num;
         this.address = address;
-        this.healthStatus = healthStatus;
         Weight = weight;
+        this.bloodType=bloodType;
+    }
+    public  String getType() {
+        if (bloodType == null || bloodType.isEmpty()) {
+            return "Unknown";
+        }
+
+        bloodType = bloodType.toUpperCase();
+
+        switch (bloodType) {
+            case "A+":
+            case "A-":
+                return "A";
+            case "B+":
+            case "B-":
+                return "B";
+            case "AB+":
+            case "AB-":
+                return "AB";
+            case "O+":
+            case "O-":
+                return "O";
+            default:
+                return "Unknown";
+        }
     }
 
+    public  String getSign() {
+        if (bloodType == null || bloodType.isEmpty()) {
+            return "Unknown";
+        }
+
+        bloodType = bloodType.toUpperCase();
+
+        switch (bloodType) {
+            case "A+":
+            case "O+":
+            case "A-":
+            case "O-":
+                return "Positive";
+            case "B+":
+            case "AB+":
+            case "B-":
+            case "AB-":
+                return "Negative";
+            default:
+                return "Unknown";
+        }
+    }
     // Getters
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", dob='" + dob + '\'' +
+                ", num='" + num + '\'' +
+                ", address='" + address + '\'' +
+                ", healthStatus='" + healthStatus + '\'' +
+                ", Weight=" + Weight +
+                ", bloodType='" + bloodType + '\'' +
+                '}';
     }
 
     public String getUsername() {
@@ -74,7 +138,7 @@ public class Person {
         return healthStatus;
     }
 
-    public String getWeight() {
+    public int getWeight() {
         return Weight;
     }
 
@@ -119,7 +183,7 @@ public class Person {
         this.healthStatus = healthStatus;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(int weight) {
         Weight = weight;
     }
 }

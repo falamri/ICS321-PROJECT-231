@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Blood Donation App</string>
+        <string name="choose_blood_type">Choose Blood Type</string>
+        <array name="blood_types">
+            <item>A+</item>
+            <item>A-</item>
+            <item>B+</item>
+            <item>B-</item>
+            <item>AB+</item>
+            <item>AB-</item>
+            <item>O+</item>
+            <item>O-</item>
+        </array>
 </resources>

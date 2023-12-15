@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DatabaseHelper db= new DatabaseHelper(getApplicationContext());
+        db.printDonorData(db.getReadableDatabase());
     }
 
     // Handle login button click
