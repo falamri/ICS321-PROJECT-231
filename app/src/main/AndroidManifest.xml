@@ -29,6 +29,12 @@
         <activity android:name=".SignupActivity" />
 
         <!-- Other activities, services, etc., might be listed here -->
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".DonateActivity" />
+        <activity android:name=".FindDonorsActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".ReportActivity" />
+        <activity android:name=".RequestActivity" />
 
     </application>
 

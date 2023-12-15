@@ -1,47 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#CCDDE5"
     android:padding="16dp">
-
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:layout_marginBottom="16dp" />
-
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_below="@id/editTextEmail"
-        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="LOG IN"
-        android:layout_below="@id/editTextPassword"
-        android:layout_marginBottom="16dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:text="LOG IN" />
 
-    <TextView
-        android:id="@+id/textViewForgotPassword"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forgot password?"
-        android:layout_below="@id/loginButton"
-        android:layout_marginBottom="16dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-20dp"
+        android:visibility="visible"
+        app:srcCompat="@drawable/logo_z" />
 
     <TextView
-        android:id="@+id/textViewRegisterNow"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Register now"
-        android:layout_below="@id/textViewForgotPassword"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="450dp"
+        android:text="Donate Blood"
+        android:textAlignment="center"
+        android:textColor="#FF2121"
+        android:textSize="33sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="400dp"
+        android:text="Save Lives"
+        android:textAlignment="center"
+        android:textColor="#FF2121"
+        android:textSize="33sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+         />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="262dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="332dp"
+        android:ems="10"
+        android:hint="Enter email here"
+        android:inputType="textEmailAddress"
+        android:textAlignment="viewStart"
+
+        />
+
+    <TextView
+        android:id="@+id/hyperlinkTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="85dp"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:text="Register here"
+        android:textColorLink="?attr/colorAccent"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="259dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="267dp"
+        android:ems="10"
+        android:hint="Enter Your Password"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="182dp"
+        android:layout_height="43dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="17dp"
+        android:layout_marginBottom="62dp"
+        android:text="Don't Have an Account?"
+        android:textAlignment="viewStart"
+        android:textStyle="bold" />
+
 </RelativeLayout>
