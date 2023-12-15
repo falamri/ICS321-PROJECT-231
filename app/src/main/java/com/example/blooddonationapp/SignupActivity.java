@@ -95,7 +95,7 @@ public class SignupActivity extends AppCompatActivity {
 
             // Use the DatabaseHelper to add the user
             boolean result=dbHelper.addUser(person);
-            Log.d("Fuck", String.valueOf(result));
+            Log.d("Check", String.valueOf(result));
 
             // Navigate to the MainPage (you need to replace MainPage with your actual activity)
             Intent intent = new Intent(this, MainActivity.class);
