@@ -202,7 +202,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getUser(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM Person WHERE id = ?", new String[]{String.valueOf(userId)});
+        return db.rawQuery("SELECT * FROM Person WHERE personID = ?", new String[]{String.valueOf(userId)});
     }
 
     public boolean updateUser(Person user) {
@@ -219,20 +219,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("Weight", user.getWeight());
         contentValues.put("Password", user.getPassword());
 
-        boolean result= db.update("Person", contentValues, "id = ?", new String[]{String.valueOf(id)})
+        boolean result= db.update("Person", contentValues, "personID = ?", new String[]{String.valueOf(id)})
                 > 0;
         db.setTransactionSuccessful(); // commit the transaction
         db.endTransaction();
-        db.close();
         return result;
     }
 
     public boolean removeUser(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        boolean result= db.delete("Person", "id = ?", new String[]{String.valueOf(userId)}) > 0;
+        boolean result= db.delete("Person", "personID= ?", new String[]{String.valueOf(userId)}) > 0;
         db.setTransactionSuccessful(); // commit the transaction
         db.endTransaction();
-        db.close();
         return result;
     }
     public Cursor searchUserHistory(int userId) {
@@ -252,7 +250,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("Date", drive.getStart_data());
         contentValues.put("Location", drive.getLocation());
         contentValues.put("DriveID", drive.getId());
-        long result = db.insert("BloodDrive", null, contentValues);
+        long result = db.insert("Drive", null, contentValues);
         return result != -1;
     }
     public void generateReport() {
@@ -263,7 +261,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //Reports
 public Cursor getDonationsInPeriod(String startDate, String endDate) {
     SQLiteDatabase db = this.getReadableDatabase();
-    return db.rawQuery("SELECT * FROM BloodDonation WHERE date BETWEEN ? AND ?", new String[]{startDate, endDate});
+    return db.rawQuery("SELECT * FROM BloodBag WHERE CollectionDate BETWEEN ? AND ?", new String[]{startDate, endDate});
+    //This need to rewritten from the scratch
 }
 
     public Cursor getBloodAmountByType() {
@@ -290,8 +289,9 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT Request.requestid, Request.status, Person.fname, BloodType.PositveOrNegtive, BloodType.BloodGroup " +
                 "FROM Request " +
-                "INNER JOIN Person ON Request.PersonId = Person.PersonID " +
-                "INNER JOIN BloodType ON Person.bloodId = BloodType.BloodID";
+                "INNER JOIN Person ON Request.PersonId = Person.personID " +
+                "INNER JOIN BloodType ON PersonBloodType.BloodId = BloodType.BloodID";
+        //This also needs to be rewritten completely
         Cursor cursor = db.rawQuery(query, null);
 
         ArrayList<Request> resultList = new ArrayList<>();
@@ -315,7 +315,7 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
     //login
     public Person loginUser(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM Person WHERE Email = ? AND Password = ?";
+        String query = "SELECT * FROM Person WHERE email = ? AND Password = ?";
         Cursor cursor = db.rawQuery(query, new String[]{email, password});
 
         if (cursor.moveToFirst()) {
@@ -344,20 +344,20 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
     }
     public String getBloodInfoForPerson(int personId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM PersonBloodType WHERE personID = ?";
+        String query = "SELECT * FROM PersonBloodType WHERE PersonID = ?";
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(personId)});
 
         if (cursor.moveToFirst()) {
             // Retrieve blood type information
-            @SuppressLint("Range") int bloodId = cursor.getInt(cursor.getColumnIndex("bloodID"));
+            @SuppressLint("Range") int bloodId = cursor.getInt(cursor.getColumnIndex("BloodID"));
 
             // Get PositiveOrNegative and BloodGroup from the Blood table
-            String bloodInfoQuery = "SELECT PositiveOrNegative, BloodGroup FROM Blood WHERE bloodID = ?";
+            String bloodInfoQuery = "SELECT PostiveOrNegative, BloodGroup FROM BloodType WHERE BloodID = ?";
             Cursor bloodCursor = db.rawQuery(bloodInfoQuery, new String[]{String.valueOf(bloodId)});
 
             if (bloodCursor.moveToFirst()) {
                 // Extract PositiveOrNegative and BloodGroup
-                @SuppressLint("Range") String positiveOrNegative = bloodCursor.getString(bloodCursor.getColumnIndex("PositiveOrNegative"));
+                @SuppressLint("Range") String positiveOrNegative = bloodCursor.getString(bloodCursor.getColumnIndex("PostiveOrNegative"));
                 @SuppressLint("Range") String bloodGroup = bloodCursor.getString(bloodCursor.getColumnIndex("BloodGroup"));
 
                 // Create a string representation of the blood information
