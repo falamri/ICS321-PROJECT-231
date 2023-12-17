@@ -1,75 +1,87 @@
 <!-- report_page.xml -->
 
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#CCDDE5">
 
-    <!-- Header -->
-    <TextView
-        android:id="@+id/reportHeader"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reports"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:padding="16dp"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <!-- Filter Options -->
-    <!-- Include filter options like date pickers or dropdowns here -->
-    <!-- You can use DatePicker or Spinner widgets for filter options -->
+        <!-- Header -->
+        <TextView
+            android:id="@+id/reportHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reports"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
 
-    <!-- Report List 1: Blood Donations -->
-    <TextView
-        android:id="@+id/bloodDonationsHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="1. Blood Donations"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:padding="16dp"
-        android:layout_below="@+id/reportHeader"/>
+        <!-- Report List 1: Blood Donations -->
+        <TextView
+            android:id="@+id/bloodDonationsHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. Blood Donations"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
 
-    <!-- RecyclerView for Blood Donations -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/bloodDonationsRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bloodDonationsHeader"/>
+        <!-- RecyclerView for Blood Donations -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bloodDonationsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
 
-    <!-- Report List 2: Blood Requests -->
+        <!-- Report List 2: Collection Drives -->
+        <TextView
+            android:id="@+id/collectionDrivesHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. Collection Drives"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
 
-    <!-- RecyclerView for Blood Requests -->
+        <!-- RecyclerView for Collection Drives -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/collectionDrivesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
 
-    <!-- Report List 3: Aggregated Amount by Blood Type -->
-    <TextView
-        android:id="@+id/aggregatedAmountHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="3. Aggregated Amount by Blood Type"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:padding="16dp"
-        android:layout_below="@+id/collectionDrivesRecyclerView"/>
+        <!-- Report List 3: Aggregated Amount by Blood Type -->
+        <TextView
+            android:id="@+id/aggregatedAmountHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. Aggregated Amount by Blood Type"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
 
-    <!-- Placeholder for Pie Chart -->
+        <!-- Placeholder for Pie Chart -->
+        <org.eazegraph.lib.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="16dp"/>
+        <LinearLayout
+            android:id="@+id/legendLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pieChart"
+            android:orientation="horizontal"
+            android:padding="16dp">
+            <!-- Legend entries will be added dynamically here -->
+        </LinearLayout>
 
-    <!-- Report List 4: Collection Drives -->
-    <TextView
-        android:id="@+id/collectionDrivesHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="4. Collection Drives"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:padding="16dp"
-        android:layout_below="@+id/bloodDonationsRecyclerView"/>
+    </LinearLayout>
 
-    <!-- RecyclerView for Collection Drives -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/collectionDrivesRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/collectionDrivesHeader"/>
-
-</RelativeLayout>
+</ScrollView>

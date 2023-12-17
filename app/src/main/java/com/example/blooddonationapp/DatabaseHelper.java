@@ -228,6 +228,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean removeUser(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
         boolean result= db.delete("Person", "personID= ?", new String[]{String.valueOf(userId)}) > 0;
         db.setTransactionSuccessful(); // commit the transaction
         db.endTransaction();
@@ -287,7 +288,7 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
     }
     public ArrayList<Request> listRequest() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT Request.requestid, Request.status, Person.fname, BloodType.PositveOrNegtive, BloodType.BloodGroup " +
+        String query = "SELECT Request.requestid, Request.status, Person.fname, BloodType.PostiveOrNegtive, BloodType.BloodGroup " +
                 "FROM Request " +
                 "INNER JOIN Person ON Request.PersonId = Person.personID " +
                 "INNER JOIN BloodType ON PersonBloodType.BloodId = BloodType.BloodID";
@@ -372,10 +373,87 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
         cursor.close();
         return null;
     }
+    public ArrayList<DonorItem> getAllDonors() {
+        ArrayList<DonorItem> donorList = new ArrayList<>();
 
+        // SQL query to select data from Donor table and join with Person table
+        String query = "SELECT Person.fname, Person.lname, Donor.LastDonationDate FROM Donor " +
+                "INNER JOIN Person ON Donor.PersonID = Person.personID";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Iterate through the result set and create DonorItem objects
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String firstName = cursor.getString(cursor.getColumnIndex("fname"));
+                @SuppressLint("Range") String lastName = cursor.getString(cursor.getColumnIndex("lname"));
+                @SuppressLint("Range") String lastDonationDate = cursor.getString(cursor.getColumnIndex("LastDonationDate"));
+
+                DonorItem donorItem = new DonorItem(firstName, lastName, lastDonationDate);
+                donorList.add(donorItem);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return donorList;
+    }
+
+
+    public ArrayList<Drive> getAllDrives() {
+        ArrayList<Drive> driveList = new ArrayList<>();
+
+        // SQL query to select all columns from Drive table
+        String query = "SELECT * FROM Drive";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Iterate through the result set and create Drive objects
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex("Date"));
+                @SuppressLint("Range") String location = cursor.getString(cursor.getColumnIndex("Location"));
+                @SuppressLint("Range") int driveID = cursor.getInt(cursor.getColumnIndex("DriveID"));
+
+                Drive drive = new Drive(date, location, driveID);
+                driveList.add(drive);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return driveList;
+    }
 
 // Add the getBloodInfoForPerson method here
 
+    // Method to get an array of BloodTypeItem objects for populating the pie chart
+    public ArrayList<BloodTypeItem> getBloodTypeCounts() {
+        ArrayList<BloodTypeItem> bloodTypeList = new ArrayList<>();
+
+        // SQL query to count occurrences of each BloodID in BloodBag table
+        String query = "SELECT Blood_ID, COUNT(*) AS Count FROM BloodBag GROUP BY Blood_ID";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Iterate through the result set and create BloodTypeItem objects
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String bloodID = cursor.getString(cursor.getColumnIndex("Blood_ID"));
+                @SuppressLint("Range") int count = cursor.getInt(cursor.getColumnIndex("Count"));
+
+                BloodTypeItem bloodTypeItem = new BloodTypeItem(Integer.parseInt(bloodID), count);
+                bloodTypeList.add(bloodTypeItem);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return bloodTypeList;
+    }
 
 
 }
