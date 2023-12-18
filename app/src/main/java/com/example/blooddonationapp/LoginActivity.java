@@ -42,8 +42,11 @@ public class LoginActivity extends AppCompatActivity {
         String enteredPassword = editTextPassword.getText().toString();
 
         DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
-        if (dbHelper.loginUser(enteredEmail, enteredPassword)!=null) {
-            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        Person user =dbHelper.loginUser(enteredEmail, enteredPassword);
+        if (user!=null) {
+            Intent intent=new Intent(LoginActivity.this, HomeActivity.class);
+            intent.putExtra("User",user);
+            startActivity(intent);
 
         } else {
 

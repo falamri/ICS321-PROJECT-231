@@ -12,15 +12,38 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Header -->
-        <TextView
-            android:id="@+id/reportHeader"
+        <!-- Go Back Button -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reports"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Go Back Button -->
+            <ImageButton
+                android:id="@+id/goBackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/chevron"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="Go Back"
+                android:layout_marginEnd="20dp"
+                />
+
+            <!-- Header -->
+            <TextView
+                android:id="@+id/reportHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Reports"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="0dp"/>
+
+        </LinearLayout>
+
 
         <!-- Report List 1: Blood Donations -->
         <TextView
@@ -72,6 +95,8 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginBottom="16dp"/>
+
+        <!-- Legend Layout -->
         <LinearLayout
             android:id="@+id/legendLayout"
             android:layout_width="match_parent"
@@ -81,6 +106,7 @@
             android:padding="16dp">
             <!-- Legend entries will be added dynamically here -->
         </LinearLayout>
+
 
     </LinearLayout>
 

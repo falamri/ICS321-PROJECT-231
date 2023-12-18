@@ -1,8 +1,11 @@
 package com.example.blooddonationapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +32,16 @@ public class ReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.report);
+        ImageButton goBackButton = (ImageButton) findViewById(R.id.goBackButton);
+
+        // Set click listeners
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goBackToHomePage();
+            }
+        });
+
 
         // Assuming you have initialized the donorList and collectionDriveList
         List<DonorItem> donorList = getDonorList();
@@ -59,6 +72,13 @@ public class ReportActivity extends AppCompatActivity {
         // Set layout manager and adapter for collection drives RecyclerView
         collectionDrivesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         collectionDrivesRecyclerView.setAdapter(collectionDriveAdapter);
+    }
+
+    private void goBackToHomePage() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish(); // Optional: Close the current activity
+
     }
 
     // Method to get a list of sample donors

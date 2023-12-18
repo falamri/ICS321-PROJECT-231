@@ -1,7 +1,9 @@
 package com.example.blooddonationapp;
 
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
     private int id;
     private String username;
     private String password;

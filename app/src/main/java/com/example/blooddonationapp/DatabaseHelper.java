@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "bloodDonations.db";
 
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     private final Context context;
 
@@ -45,8 +45,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // No need to upgrade tables, as they are already created
+        // Drop the existing table if it exists
+        db.execSQL("DROP TABLE IF EXISTS BloodRequestRecieve");
+
+        // Create the new table
+        String createTableQuery = "CREATE TABLE IF NOT EXISTS BloodRequestRecieve (" +
+                "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "PersonID INTEGER," +
+                "Status TEXT," +
+                "FOREIGN KEY(PersonID) REFERENCES Person(personID));";
+        db.execSQL(createTableQuery);
     }
+
 
     private void checkAndCopyDatabase() {
         if (!context.getDatabasePath(DATABASE_NAME).exists()) {
@@ -282,15 +292,15 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
         contentValues.put("Id", request.getId());
         contentValues.put("PersonId", request.getPersonID());
         contentValues.put("Status", request.getStatus());
-        long result = db.insert("Request", null, contentValues);
+        long result = db.insert("BloodRequestRecieve", null, contentValues);
         return result != -1;
 
     }
     public ArrayList<Request> listRequest() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT Request.requestid, Request.status, Person.fname, BloodType.PostiveOrNegtive, BloodType.BloodGroup " +
+        String query = "SELECT BloodRequestRecieve.Id, BloodRequestRecieve.Status, Person.fname, BloodType.PostiveOrNegtive, BloodType.BloodGroup " +
                 "FROM Request " +
-                "INNER JOIN Person ON Request.PersonId = Person.personID " +
+                "INNER JOIN Person ON BloodRequestRecieve.PersonId = Person.personID " +
                 "INNER JOIN BloodType ON PersonBloodType.BloodId = BloodType.BloodID";
         //This also needs to be rewritten completely
         Cursor cursor = db.rawQuery(query, null);

@@ -1,6 +1,92 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<!-- create_request_page.xml -->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CCDDE5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Linear Layout for Header and Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Go Back Button -->
+            <ImageButton
+                android:id="@+id/goBackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/chevron"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="Go Back"
+                android:layout_marginEnd="20dp"
+                />
+
+            <!-- Header -->
+            <TextView
+                android:id="@+id/reportHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Create Request"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"/>
+
+        </LinearLayout>
+
+        <!-- Location Field -->
+        <EditText
+            android:id="@+id/locationEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Location"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Hospital Field -->
+        <EditText
+            android:id="@+id/hospitalEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hospital"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Mobile Field -->
+        <EditText
+            android:id="@+id/mobileEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:hint="Mobile"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Notes Field -->
+        <EditText
+            android:id="@+id/notesEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Notes"
+            android:inputType="textMultiLine"
+            android:minLines="5"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/submitRequestButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit Request"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
+
+</ScrollView>
