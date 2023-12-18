@@ -1,0 +1,56 @@
+<!-- receive_page.xml -->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CCDDE5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Go Back Button -->
+            <ImageButton
+                android:id="@+id/goBackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/chevron"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="Go Back"
+                android:layout_marginEnd="20dp"
+                />
+
+            <!-- Header -->
+            <TextView
+                android:id="@+id/reportHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Receive Blood"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"/>
+
+        </LinearLayout>
+
+        <!-- RecyclerView for Blood Bags -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bloodBagsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

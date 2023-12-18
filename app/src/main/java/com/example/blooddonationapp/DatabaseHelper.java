@@ -16,7 +16,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -107,7 +109,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return highestId;
     }
+    public int getHighestDonorId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(DonorID) FROM Donor", null);
 
+        int highestId = 0;
+
+        if (cursor.moveToFirst()) {
+            highestId = cursor.getInt(0);
+        }
+
+
+        return highestId;
+    }
+    public int getHighestRecipientId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(RecipientID) FROM Recipient", null);
+
+        int highestId = 0;
+
+        if (cursor.moveToFirst()) {
+            highestId = cursor.getInt(0);
+        }
+
+
+        return highestId;
+    }
 
     public void printDonorData(SQLiteDatabase db) {
         String query = "SELECT * FROM Person";
@@ -255,6 +282,101 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return db.rawQuery(query, new String[]{String.valueOf(userId)});
     }
+    @SuppressLint("NewApi")
+    public boolean insertDonor(Person user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("LastDonationDate", String.valueOf(LocalDate.now()));
+        contentValues.put("PersonID", user.getId());
+        contentValues.put("DonorID", getHighestDonorId()+1);
+        long result = db.insert("Drive", null, contentValues);
+        return result != -1;
+    }
+
+    @SuppressLint("NewApi")
+    public boolean insertRecipient(Person user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("PersonID", user.getId());
+        contentValues.put("RecipientID", getHighestRecipientId()+1);
+        long result = db.insert("Recipient", null, contentValues);
+        return result != -1;
+    }
+    public boolean removeBag(int bagID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        boolean result= db.delete("BloodBag", "BagID= ?", new String[]{String.valueOf(bagID)}) > 0;
+        db.setTransactionSuccessful(); // commit the transaction
+        db.endTransaction();
+        return result;
+
+    }
+    public List<BloodBagItem> getBloodBagItemsByBloodID(String bloodID) {
+        List<BloodBagItem> bloodBagItems = new ArrayList<>();
+        List<Integer> bloodBagIDs = getBloodBagIDs(bloodID);
+
+        for (int bloodBagID : bloodBagIDs) {
+            String donorName = getDonorNameByBloodBagID(bloodBagID);
+            BloodBagItem bloodBagItem = new BloodBagItem(donorName, bloodBagID);
+            bloodBagItems.add(bloodBagItem);
+        }
+        Log.d("BAGS", bloodBagItems.toString()+"\n"+bloodID);
+        return bloodBagItems;
+    }
+
+    @SuppressLint("Range")
+    private String getDonorNameByBloodBagID(int bloodBagID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT p.fname, p.lname " +
+                "FROM Donor d " +
+                "JOIN Person p ON d.PersonID = p.personID " +
+                "WHERE d.DonorID = (SELECT DonorID FROM BloodBag WHERE BagID = ?)";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(bloodBagID)});
+
+        String donorName = "";
+
+        if (cursor != null && cursor.moveToFirst()) {
+            donorName = cursor.getString(cursor.getColumnIndex("fname")) + " " +
+                    cursor.getString(cursor.getColumnIndex("lname"));
+
+            // Close the cursor
+            cursor.close();
+        }
+
+        // Close the database
+        db.close();
+
+        return donorName;
+    }
+
+    @SuppressLint("Range")
+    public List<Integer> getBloodBagIDs(String bloodID) {
+        List<Integer> bloodBagIDs = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT BagID FROM BloodBag WHERE Blood_ID = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{bloodID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                int bloodBagID = cursor.getInt(cursor.getColumnIndex("BagID"));
+                bloodBagIDs.add(bloodBagID);
+            } while (cursor.moveToNext());
+
+            // Close the cursor
+            cursor.close();
+        }
+
+        // Close the database
+        db.close();
+
+        return bloodBagIDs;
+    }
+
     public boolean initiateBloodDrive(Drive drive) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -464,6 +586,36 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
         db.close();
         return bloodTypeList;
     }
+    @SuppressLint("Range")
+    public String getLastDonationDate(int personID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String lastDonationDate = null;
 
+        String query = "SELECT LastDonationDate FROM Donor WHERE PersonID = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(personID)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            lastDonationDate = cursor.getString(cursor.getColumnIndex("LastDonationDate"));
+            cursor.close();
+        }
+
+        return lastDonationDate;
+    }
+    @SuppressLint("Range")
+    public String getStatus(int personID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String status = null;
+
+        String query = "SELECT Status FROM BloodRequestRecive WHERE PersonID = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(personID)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            status = cursor.getString(cursor.getColumnIndex("Status"));
+            cursor.close();
+        }
+
+        return status;
+
+    }
 
 }

@@ -30,6 +30,11 @@ public class Person implements Serializable {
         Weight = weight;
         this.bloodType=bloodType;
     }
+
+    public String getBloodType() {
+        return bloodType;
+    }
+
     public  String getType() {
         if (bloodType == null || bloodType.isEmpty()) {
             return "Unknown";
@@ -52,6 +57,19 @@ public class Person implements Serializable {
                 return "O";
             default:
                 return "Unknown";
+        }
+    }
+    public int getBloodId(String type){
+        switch(type){
+            case "Positive O": return 1;
+            case "Negative O": return 2;
+            case "Positive A":return 3;
+            case "Negative A":return 4;
+            case "Positive B":return 5;
+            case"Negative B":return 6;
+            case "Positive AB": return 7;
+            case "Negative AB":return 8;
+            default: return -1;
         }
     }
 

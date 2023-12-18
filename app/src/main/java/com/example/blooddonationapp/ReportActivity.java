@@ -75,7 +75,14 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private void goBackToHomePage() {
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent=getIntent();
+        Person user=null;
+        if(intent!=null)
+            user= (Person) intent.getSerializableExtra("User");
+        final Person finalUser=user;
+
+        intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("User",finalUser);
         startActivity(intent);
         finish(); // Optional: Close the current activity
 
