@@ -245,6 +245,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean updateUser(Person user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        db.beginTransaction();
         int id=user.getId();
         contentValues.put("fname", user.getFname());
         contentValues.put("lname", user.getLname());

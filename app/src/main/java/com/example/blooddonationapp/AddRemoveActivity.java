@@ -44,6 +44,16 @@ public class AddRemoveActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        ImageButton btnEditUser = findViewById(R.id.btnEditUser);
+        btnEditUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to AddActivity
+                Intent intent = new Intent(AddRemoveActivity.this, EditUserActivity.class);
+                intent.putExtra("User",finalUser);
+                startActivity(intent);
+            }
+        });
         ImageButton goBack=findViewById(R.id.goBackButton);
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -40,6 +40,7 @@
         <activity android:name=".AddRemoveActivity" />
         <activity android:name=".AddActivity" />
         <activity android:name=".RemoveActivity" />
+        <activity android:name=".EditUserActivity" />
 
     </application>
 
