@@ -98,7 +98,7 @@ public class SignupActivity extends AppCompatActivity {
             Log.d("Check", String.valueOf(result));
 
             // Navigate to the MainPage (you need to replace MainPage with your actual activity)
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, AdminPage.class);
             startActivity(intent);
             finish(); // Optional: Close the current activity
         }

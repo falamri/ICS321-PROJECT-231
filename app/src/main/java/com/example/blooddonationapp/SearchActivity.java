@@ -37,7 +37,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 // Set click listeners for buttons
                 Person finalUser = user;
-                intent = new Intent(SearchActivity.this, HomeActivity.class);
+                intent = new Intent(SearchActivity.this, AdminPage.class);
                 intent.putExtra("User",finalUser);
                 startActivity(intent);
 

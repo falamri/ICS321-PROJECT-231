@@ -1,6 +1,5 @@
 package com.example.blooddonationapp;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -81,7 +80,7 @@ public class ReportActivity extends AppCompatActivity {
             user= (Person) intent.getSerializableExtra("User");
         final Person finalUser=user;
 
-        intent = new Intent(this, HomeActivity.class);
+        intent = new Intent(this, AdminPage.class);
         intent.putExtra("User",finalUser);
         startActivity(intent);
         finish(); // Optional: Close the current activity

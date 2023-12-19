@@ -42,7 +42,11 @@ public class ReceiveActivity extends AppCompatActivity {
                 if(intent!=null)
                     user= (Person) intent.getSerializableExtra("User");
                 final Person finalUser=user;
-                intent = new Intent(ReceiveActivity.this, HomeActivity.class);
+                String source=intent.getStringExtra("Source");
+                if(source.equals("Admin"))
+                    intent = new Intent(ReceiveActivity.this, AdminPage.class);
+                else
+                    intent = new Intent(ReceiveActivity.this, UserPage.class);
                 intent.putExtra("User", finalUser);
                 startActivity(intent);
             }
@@ -135,7 +139,7 @@ public class ReceiveActivity extends AppCompatActivity {
                         db.insertRecipient(finalUser);
                         db.removeBag(Integer.parseInt(bagID));
                         Toast.makeText(ReceiveActivity.this, "You Received a blood bag successfully", Toast.LENGTH_SHORT).show();
-                        intent = new Intent(ReceiveActivity.this, HomeActivity.class);
+                        intent = new Intent(ReceiveActivity.this, AdminPage.class);
                         intent.putExtra("User", finalUser);
                         startActivity(intent);
 

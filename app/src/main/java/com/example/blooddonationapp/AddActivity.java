@@ -104,7 +104,7 @@ public class AddActivity extends AppCompatActivity {
             if(result)
                 Toast.makeText(this, "User has been Created", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, AdminPage.class);
             startActivity(intent);
             finish(); // Optional: Close the current activity
         }

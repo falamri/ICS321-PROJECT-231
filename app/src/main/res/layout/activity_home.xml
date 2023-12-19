@@ -176,14 +176,14 @@
 
         <!-- Button 5: Add/Remove Users -->
         <LinearLayout
-            android:id="@+id/layoutAddRemoveUsers"
+            android:id="@+id/Profile1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginEnd="16dp">
 
             <ImageButton
-                android:id="@+id/btnAddRemoveUsers"
+                android:id="@+id/Profile"
                 android:layout_width="65dp"
                 android:layout_height="63dp"
                 android:background="?android:attr/selectableItemBackground"

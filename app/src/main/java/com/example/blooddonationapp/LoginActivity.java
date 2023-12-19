@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,11 +45,18 @@ public class LoginActivity extends AppCompatActivity {
         DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
         Person user =dbHelper.loginUser(enteredEmail, enteredPassword);
         if (user!=null) {
-            Intent intent=new Intent(LoginActivity.this, HomeActivity.class);
-            intent.putExtra("User",user);
-            startActivity(intent);
-
-        } else {
+            if(dbHelper.isAdmin(enteredEmail,enteredPassword)) {
+                Intent intent = new Intent(LoginActivity.this, AdminPage.class);
+                intent.putExtra("User", user);
+                startActivity(intent);
+            }
+            else{
+                Intent intent = new Intent(LoginActivity.this, UserPage.class);
+                intent.putExtra("User", user);
+                startActivity(intent);
+            }
+            }
+         else {
             Toast.makeText(this, "Email or Password are incorrect", Toast.LENGTH_SHORT).show();}
 
     }

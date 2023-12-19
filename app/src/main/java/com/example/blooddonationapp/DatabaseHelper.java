@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "bloodDonations.db";
 
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     private final Context context;
 
@@ -44,19 +44,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // No need to create tables, as they are already created
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop the existing table if it exists
+        // Drop the existing tables if they exist
         db.execSQL("DROP TABLE IF EXISTS BloodRequestRecieve");
+        db.execSQL("DROP TABLE IF EXISTS Admin");
 
-        // Create the new table
-        String createTableQuery = "CREATE TABLE IF NOT EXISTS BloodRequestRecieve (" +
+        // Create the new tables
+        createTables(db);
+
+        // Insert a row into the Admin table
+        ContentValues values = new ContentValues();
+        values.put("PersonID", 10); // Assuming the column name is "PersonID" in the Admin table
+        db.insert("Admin", null, values);
+    }
+
+    private void createTables(SQLiteDatabase db) {
+        // Create BloodRequestRecieve table
+        String createBloodRequestRecieveQuery = "CREATE TABLE IF NOT EXISTS BloodRequestRecieve (" +
                 "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "PersonID INTEGER," +
                 "Status TEXT," +
                 "FOREIGN KEY(PersonID) REFERENCES Person(personID));";
-        db.execSQL(createTableQuery);
+        db.execSQL(createBloodRequestRecieveQuery);
+
+        // Create Admin table
+        String createAdminTableQuery = "CREATE TABLE IF NOT EXISTS Admin (" +
+                "PersonID INTEGER PRIMARY KEY," +  // Primary Key definition
+                "FOREIGN KEY(PersonID) REFERENCES Person(personID));";
+        db.execSQL(createAdminTableQuery);
     }
 
 
@@ -151,6 +167,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
     }
+    @SuppressLint("Range")
+    public boolean isAdmin(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT personID FROM Person WHERE email = ? AND Password = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{email, password});
+
+        if (cursor.moveToFirst()) {
+            int personID = cursor.getInt(cursor.getColumnIndex("personID"));
+
+            // Now check if the personID exists in the Admin table
+            String adminQuery = "SELECT PersonID FROM Admin WHERE PersonID = ?";
+            Cursor adminCursor = db.rawQuery(adminQuery, new String[]{String.valueOf(personID)});
+
+            boolean isAdmin = adminCursor.moveToFirst();
+
+            // Close the cursors to free up resources
+            cursor.close();
+            adminCursor.close();
+
+            return isAdmin;
+        } else {
+            // If no match found in Person table
+            cursor.close();
+            return false;
+        }
+    }
+
+
     public boolean addUser(Person user) {
         try (SQLiteDatabase db = this.getWritableDatabase()) {
             db.beginTransaction();
@@ -509,6 +554,40 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
             return null;
         }
     }
+    // Get the number of donations for a given PersonID
+    public int getDonationNum(int personID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+
+        // Query to get the count of entries with the given PersonID in the Donor table
+        String query = "SELECT COUNT(*) FROM Donor WHERE PersonID = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(personID)});
+
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        return count;
+    }
+
+    // Get the number of receipts for a given PersonID
+    public int getReceiveNum(int personID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+
+        // Query to get the count of entries with the given PersonID in the Recipient table
+        String query = "SELECT COUNT(*) FROM Recipient WHERE PersonID = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(personID)});
+
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        return count;
+    }
+
     public String getBloodInfoForPerson(int personId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM PersonBloodType WHERE PersonID = ?";

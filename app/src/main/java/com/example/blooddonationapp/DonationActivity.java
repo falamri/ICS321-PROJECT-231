@@ -35,7 +35,11 @@ public class DonationActivity extends AppCompatActivity {
                 if(intent!=null)
                     user= (Person) intent.getSerializableExtra("User");
                 final Person finalUser=user;
-                intent = new Intent(DonationActivity.this, HomeActivity.class);
+                String source=intent.getStringExtra("Source");
+                if(source.equals("Admin"))
+                    intent = new Intent(DonationActivity.this, AdminPage.class);
+                else
+                    intent = new Intent(DonationActivity.this, UserPage.class);
                 intent.putExtra("User", finalUser);
                 startActivity(intent);
             }
@@ -62,7 +66,7 @@ public class DonationActivity extends AppCompatActivity {
                     dbHelper.insertDonor(finalUser);
 
                     // Finish the current activity and go back to the HomeActivity
-                    Intent intent = new Intent(DonationActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(DonationActivity.this, AdminPage.class);
                     intent.putExtra("User", finalUser);
                     startActivity(intent);
                 }

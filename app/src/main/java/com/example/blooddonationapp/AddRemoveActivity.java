@@ -59,7 +59,7 @@ public class AddRemoveActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to RemoveActivity
-                Intent intent = new Intent(AddRemoveActivity.this, HomeActivity.class);
+                Intent intent = new Intent(AddRemoveActivity.this, AdminPage.class);
                 intent.putExtra("User",finalUser);
                 startActivity(intent);
             }

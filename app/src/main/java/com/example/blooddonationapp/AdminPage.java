@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class HomeActivity extends AppCompatActivity {
+public class AdminPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class HomeActivity extends AppCompatActivity {
         ImageButton reportButton = findViewById(R.id.btnReports);
         ImageButton requestButton = findViewById(R.id.btnRequest);
         ImageButton searchButton = findViewById(R.id.btnSearchUsers);
-        ImageButton addRemoveButton = findViewById(R.id.btnAddRemoveUsers);
+        ImageButton addRemoveButton = findViewById(R.id.Profile);
         Intent intent = getIntent();
         Person user=null;
         if (intent != null) {
@@ -37,8 +37,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to Find Donors page
-                    Intent intent = new Intent(HomeActivity.this, ReceiveActivity.class);
+                    Intent intent = new Intent(AdminPage.this, ReceiveActivity.class);
                     intent.putExtra("User", finalUser);
+                    intent.putExtra("Source", "Admin");
                     startActivity(intent);
                 }
 
@@ -47,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to Find Donors page
-                    Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                    Intent intent = new Intent(AdminPage.this, SearchActivity.class);
                     intent.putExtra("User", finalUser);
                     startActivity(intent);
                 }
@@ -57,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to Find Donors page
-                    Intent intent = new Intent(HomeActivity.this, AddRemoveActivity.class);
+                    Intent intent = new Intent(AdminPage.this, AddRemoveActivity.class);
                     intent.putExtra("User", finalUser);
                     startActivity(intent);
                 }
@@ -69,12 +70,13 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(isLastDonationWithinThreeMonths(finalUser)) {
                     // Handle Donates button click
-                    Intent intent = new Intent(HomeActivity.this, DonationActivity.class);
+                    Intent intent = new Intent(AdminPage.this, DonationActivity.class);
                     intent.putExtra("User", finalUser);
+                    intent.putExtra("Source", "Admin");
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(HomeActivity.this, "You have to wait at least 3 months between each donation", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminPage.this, "You have to wait at least 3 months between each donation", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -89,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
                 if(intent!=null)
                     user= (Person) intent.getSerializableExtra("User");
 
-                 intent = new Intent(HomeActivity.this, ReportActivity.class);
+                 intent = new Intent(AdminPage.this, ReportActivity.class);
                  intent.putExtra("User",finalUser);
                  startActivity(intent);
             }
@@ -98,8 +100,9 @@ public class HomeActivity extends AppCompatActivity {
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Intent intent = new Intent(HomeActivity.this, RequestActivity.class);
+                 Intent intent = new Intent(AdminPage.this, RequestActivity.class);
                 intent.putExtra("User", finalUser);
+                intent.putExtra("Source", "Admin");
                 startActivity(intent);
             }
         });

@@ -1,0 +1,171 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CCDDE5">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#CCDDE5">
+
+        <!-- Logo and Text -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="130dp"
+            android:layout_height="160dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/logo_z" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="Donate Blood"
+            android:textAlignment="center"
+            android:textColor="#FF2121"
+            android:textSize="33sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Save Lives"
+            android:textAlignment="center"
+            android:textColor="#FF2121"
+            android:textSize="33sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <!-- Buttons Layout 1 -->
+        <LinearLayout
+            android:id="@+id/buttonsLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView2"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Button 1: Reports -->
+
+            <!-- Button 2: Donate -->
+            <LinearLayout
+                android:id="@+id/Profile1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/Profile"
+                    android:layout_width="65dp"
+                    android:layout_height="63dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/rectangle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutDonate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp">
+
+                <ImageButton
+                    android:id="@+id/btnDonate"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:src="@drawable/donate"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Donate"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Buttons Layout 2 -->
+        <LinearLayout
+            android:id="@+id/buttonsLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonsLayout1"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Button 3: Request -->
+            <LinearLayout
+                android:id="@+id/layoutRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="16dp">
+
+                <ImageButton
+                    android:id="@+id/btnRequest"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:src="@drawable/request"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Request"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Button 4: Receive -->
+            <LinearLayout
+                android:id="@+id/layoutReceive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp">
+
+                <ImageButton
+                    android:id="@+id/btnReceive"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:src="@drawable/recieve"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Receive"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Buttons Layout 3 -->
+    </RelativeLayout>
+</ScrollView>

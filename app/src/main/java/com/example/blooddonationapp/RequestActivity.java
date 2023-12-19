@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class RequestActivity extends AppCompatActivity {
 
@@ -78,7 +76,11 @@ private ImageButton goBackButton;
         if(intent!=null)
             user= (Person) intent.getSerializableExtra("User");
         final Person finalUser=user;
-        intent = new Intent(this, HomeActivity.class);
+        String source=intent.getStringExtra("Source");
+        if(source.equals("Admin"))
+            intent = new Intent(RequestActivity.this, AdminPage.class);
+        else
+            intent = new Intent(RequestActivity.this, UserPage.class);
         intent.putExtra("User",finalUser);
         startActivity(intent);
         finish(); // Optional: Close the current activity
