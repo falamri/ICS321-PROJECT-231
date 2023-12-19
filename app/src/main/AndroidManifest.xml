@@ -36,6 +36,10 @@
         <activity android:name=".ReportActivity" />
         <activity android:name=".RequestActivity" />
         <activity android:name=".ReceiveActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".AddRemoveActivity" />
+        <activity android:name=".AddActivity" />
+        <activity android:name=".RemoveActivity" />
 
     </application>
 

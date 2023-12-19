@@ -24,6 +24,8 @@ public class HomeActivity extends AppCompatActivity {
         ImageButton donatesButton = findViewById(R.id.btnDonate);
         ImageButton reportButton = findViewById(R.id.btnReports);
         ImageButton requestButton = findViewById(R.id.btnRequest);
+        ImageButton searchButton = findViewById(R.id.btnSearchUsers);
+        ImageButton addRemoveButton = findViewById(R.id.btnAddRemoveUsers);
         Intent intent = getIntent();
         Person user=null;
         if (intent != null) {
@@ -41,13 +43,33 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
         });
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to Find Donors page
+                    Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                    intent.putExtra("User", finalUser);
+                    startActivity(intent);
+                }
+
+        });
+        addRemoveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to Find Donors page
+                    Intent intent = new Intent(HomeActivity.this, AddRemoveActivity.class);
+                    intent.putExtra("User", finalUser);
+                    startActivity(intent);
+                }
+
+        });
 
         donatesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isLastDonationWithinThreeMonths(finalUser)) {
                     // Handle Donates button click
-                    Intent intent = new Intent(HomeActivity.this, DonateActivity.class);
+                    Intent intent = new Intent(HomeActivity.this, DonationActivity.class);
                     intent.putExtra("User", finalUser);
                     startActivity(intent);
                 }

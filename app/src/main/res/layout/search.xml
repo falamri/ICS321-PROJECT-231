@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#CCDDE5">
+
+    <!-- Go Back Button -->
+    <ImageButton
+        android:id="@+id/goBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/chevron"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="Go Back"
+        android:layout_marginEnd="20dp"
+        />
+    <!-- Search Field -->
+    <EditText
+        android:id="@+id/editTextId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Person ID"
+        android:inputType="number"/>
+
+    <!-- Search Button -->
+    <Button
+        android:id="@+id/btnRemove"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+
+        android:layout_marginTop="16dp"/>
+
+    <!-- Custom Layout for Person Details -->
+    <LinearLayout
+        android:id="@+id/layoutPersonDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="24dp"
+        android:visibility="gone">
+
+        <!-- Name -->
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name: "
+            android:textStyle="bold"/>
+
+        <!-- Person ID -->
+        <TextView
+            android:id="@+id/textViewId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ID: "/>
+
+        <!-- DOB -->
+        <TextView
+            android:id="@+id/textViewDob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DOB: "/>
+
+        <!-- Contact Number -->
+        <TextView
+            android:id="@+id/textViewContactNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contact: "/>
+
+        <!-- Email -->
+        <TextView
+            android:id="@+id/textViewEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email: "/>
+
+        <!-- Address -->
+        <TextView
+            android:id="@+id/textViewAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address: "/>
+
+        <!-- Health Status -->
+        <TextView
+            android:id="@+id/textViewHealthStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Health Status: "/>
+
+        <!-- Weight -->
+        <TextView
+            android:id="@+id/textViewWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Weight: "/>
+
+        <!-- Password -->
+        <TextView
+            android:id="@+id/textViewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Password: "/>
+
+    </LinearLayout>
+
+</LinearLayout>

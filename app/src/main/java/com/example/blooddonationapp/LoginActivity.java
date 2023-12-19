@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -49,10 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
 
         } else {
-
-            // Show an error message or handle unsuccessful login
-            // You may display a Toast, set an error message on the UI, etc.
-        }
+            Toast.makeText(this, "Email or Password are incorrect", Toast.LENGTH_SHORT).show();}
 
     }
     private void makeTextViewHyperlink(TextView textView) {

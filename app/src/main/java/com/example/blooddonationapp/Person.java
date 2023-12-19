@@ -31,6 +31,10 @@ public class Person implements Serializable {
         this.bloodType=bloodType;
     }
 
+    public Person() {
+
+    }
+
     public String getBloodType() {
         return bloodType;
     }

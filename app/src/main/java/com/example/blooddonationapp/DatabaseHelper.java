@@ -282,6 +282,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return db.rawQuery(query, new String[]{String.valueOf(userId)});
     }
+    @SuppressLint("Range")
+    public Person getPersonById(int personId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * " +
+                "FROM Person " +
+                "WHERE personId = ?";
+
+        String[] selectionArgs = { String.valueOf(personId) };
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        Person person = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            person = new Person();
+            person.setId(personId);
+            person.setFname(cursor.getString(cursor.getColumnIndex("fname")));
+            person.setLname(cursor.getString(cursor.getColumnIndex("lname")));
+            person.setDob(cursor.getString(cursor.getColumnIndex("DOB")));
+            person.setNum(cursor.getString(cursor.getColumnIndex("ContactNum")));
+            person.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+            person.setAddress(cursor.getString(cursor.getColumnIndex("Address")));
+            person.setHealthStatus(cursor.getString(cursor.getColumnIndex("HealthStatus")));
+            person.setWeight((int) cursor.getDouble(cursor.getColumnIndex("Weight")));
+            person.setPassword(cursor.getString(cursor.getColumnIndex("Password")));
+
+            cursor.close();
+        }
+
+        db.close();
+        return person;
+    }
+
     @SuppressLint("NewApi")
     public boolean insertDonor(Person user) {
         SQLiteDatabase db = this.getWritableDatabase();
