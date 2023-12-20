@@ -1,7 +1,9 @@
 package com.example.blooddonationapp;
 
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
     private int id;
     private String username;
     private String password;
@@ -28,6 +30,15 @@ public class Person {
         Weight = weight;
         this.bloodType=bloodType;
     }
+
+    public Person() {
+
+    }
+
+    public String getBloodType() {
+        return bloodType;
+    }
+
     public  String getType() {
         if (bloodType == null || bloodType.isEmpty()) {
             return "Unknown";
@@ -50,6 +61,19 @@ public class Person {
                 return "O";
             default:
                 return "Unknown";
+        }
+    }
+    public int getBloodId(String type){
+        switch(type){
+            case "Positive O": return 1;
+            case "Negative O": return 2;
+            case "Positive A":return 3;
+            case "Negative A":return 4;
+            case "Positive B":return 5;
+            case"Negative B":return 6;
+            case "Positive AB": return 7;
+            case "Negative AB":return 8;
+            default: return -1;
         }
     }
 

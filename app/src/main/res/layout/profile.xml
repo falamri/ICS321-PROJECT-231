@@ -1,6 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#CCDDE5">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <RelativeLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+            <!-- Go Back Button -->
+            <ImageButton
+                android:id="@+id/goBackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/chevron"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="Go Back"
+                android:layout_marginEnd="20dp"
+                />
+            <!-- Profile Header -->
+            <TextView
+                android:id="@+id/profileHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:text="Profile"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="130dp"
+                android:layout_height="160dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/logo_z"
+                app:srcCompat="@drawable/profile" />
+
+            <!-- You can repeat the include tag for each ProfileItem you want to display -->
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/textViewId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ID: 12345" />
+
+            <EditText
+                android:id="@+id/textViewPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewId"
+                android:text="Password: ********" />
+
+            <EditText
+                android:id="@+id/textViewEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewPassword"
+                android:text="Email: sample@email.com" />
+
+            <EditText
+                android:id="@+id/textViewFname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewEmail"
+                android:text="First Name: John" />
+
+            <EditText
+                android:id="@+id/textViewLname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewFname"
+                android:text="Last Name: Doe" />
+
+            <EditText
+                android:id="@+id/textViewDob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewLname"
+                android:text="DOB: 01/01/2000" />
+
+            <EditText
+                android:id="@+id/textViewNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewDob"
+                android:text="Contact Number: +1234567890" />
+
+            <EditText
+                android:id="@+id/textViewAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewNum"
+                android:text="Address: 123, Street Name, City" />
+
+            <EditText
+                android:id="@+id/textViewWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewAddress"
+                android:text="Weight: 70 kg" />
+
+            <EditText
+                android:id="@+id/textViewBloodType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewWeight"
+                android:text="Blood Type: O+" />
+
+            <TextView
+                android:id="@+id/textViewDonationNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewBloodType"
+                android:text="Donation Number: 5"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewReceiveNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewDonationNum"
+                android:text="Receive Number: 3"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/editButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/textViewReceiveNum"
+                android:text="Edit"
+                />
+
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

@@ -8,15 +8,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "bloodDonations.db";
 
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
 
     private final Context context;
 
@@ -42,11 +42,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // No need to create tables, as they are already created
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // No need to upgrade tables, as they are already created
+        // Drop the existing tables if they exist
+        db.execSQL("DROP TABLE IF EXISTS BloodRequestRecieve");
+        db.execSQL("DROP TABLE IF EXISTS Admin");
+
+        // Create the new tables
+        createTables(db);
+
+        // Insert a row into the Admin table
+        ContentValues values = new ContentValues();
+        values.put("PersonID", 10); // Assuming the column name is "PersonID" in the Admin table
+        db.insert("Admin", null, values);
     }
+
+    private void createTables(SQLiteDatabase db) {
+        // Create BloodRequestRecieve table
+        String createBloodRequestRecieveQuery = "CREATE TABLE IF NOT EXISTS BloodRequestRecieve (" +
+                "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "PersonID INTEGER," +
+                "Status TEXT," +
+                "FOREIGN KEY(PersonID) REFERENCES Person(personID));";
+        db.execSQL(createBloodRequestRecieveQuery);
+
+        // Create Admin table
+        String createAdminTableQuery = "CREATE TABLE IF NOT EXISTS Admin (" +
+                "PersonID INTEGER PRIMARY KEY," +  // Primary Key definition
+                "FOREIGN KEY(PersonID) REFERENCES Person(personID));";
+        db.execSQL(createAdminTableQuery);
+    }
+
 
     private void checkAndCopyDatabase() {
         if (!context.getDatabasePath(DATABASE_NAME).exists()) {
@@ -78,7 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d("Database Connection", "Database is successfully opened");
 
             // Example: Query and print data from the "Donors" table
-            printDonorData(db);
+            printPersonData(db);
 
         } catch (SQLiteException e) {
             Log.e("Database Connection", "Could not open the database", e);
@@ -97,9 +123,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return highestId;
     }
+    public int getHighestDonorId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(DonorID) FROM Donor", null);
+
+        int highestId = 0;
+
+        if (cursor.moveToFirst()) {
+            highestId = cursor.getInt(0);
+        }
 
 
-    public void printDonorData(SQLiteDatabase db) {
+        return highestId;
+    }
+    public int getHighestRecipientId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(RecipientID) FROM Recipient", null);
+
+        int highestId = 0;
+
+        if (cursor.moveToFirst()) {
+            highestId = cursor.getInt(0);
+        }
+
+
+        return highestId;
+    }
+
+    public void printPersonData(SQLiteDatabase db) {
         String query = "SELECT * FROM Person";
         Cursor cursor = db.rawQuery(query, null);
 
@@ -114,6 +165,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
     }
+    @SuppressLint("Range")
+    public boolean isAdmin(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT personID FROM Person WHERE email = ? AND Password = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{email, password});
+
+        if (cursor.moveToFirst()) {
+            int personID = cursor.getInt(cursor.getColumnIndex("personID"));
+
+            // Now check if the personID exists in the Admin table
+            String adminQuery = "SELECT PersonID FROM Admin WHERE PersonID = ?";
+            Cursor adminCursor = db.rawQuery(adminQuery, new String[]{String.valueOf(personID)});
+
+            boolean isAdmin = adminCursor.moveToFirst();
+
+            // Close the cursors to free up resources
+            cursor.close();
+            adminCursor.close();
+
+            return isAdmin;
+        } else {
+            // If no match found in Person table
+            cursor.close();
+            return false;
+        }
+    }
+
+
     public boolean addUser(Person user) {
         try (SQLiteDatabase db = this.getWritableDatabase()) {
             db.beginTransaction();
@@ -163,7 +243,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.endTransaction();
             }
 
-            printDonorData(db);
+
 
             return personId != -1 && bloodTypeResult != -1;
         } catch (SQLiteException e) {
@@ -208,6 +288,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean updateUser(Person user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        db.beginTransaction();
         int id=user.getId();
         contentValues.put("fname", user.getFname());
         contentValues.put("lname", user.getLname());
@@ -228,22 +309,141 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean removeUser(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
         boolean result= db.delete("Person", "personID= ?", new String[]{String.valueOf(userId)}) > 0;
         db.setTransactionSuccessful(); // commit the transaction
         db.endTransaction();
         return result;
     }
-    public Cursor searchUserHistory(int userId) {
+
+    @SuppressLint("Range")
+    public Person getPersonById(int personId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT Person.personID, Person.fname,Person.lname, Donor.DonorID,Donor.LastDonationDate, Recipient.RecipientID " +
+        String query = "SELECT * " +
                 "FROM Person " +
-                "LEFT JOIN Donor ON Person.personID = Donor.PersonID " +
-                "LEFT JOIN Recipient ON Person.personID = Recipient.PersonID " +
-                "WHERE Person.personID = ?";
+                "WHERE personId = ?";
 
-        return db.rawQuery(query, new String[]{String.valueOf(userId)});
+        String[] selectionArgs = { String.valueOf(personId) };
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        Person person = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            person = new Person();
+            person.setId(personId);
+            person.setFname(cursor.getString(cursor.getColumnIndex("fname")));
+            person.setLname(cursor.getString(cursor.getColumnIndex("lname")));
+            person.setDob(cursor.getString(cursor.getColumnIndex("DOB")));
+            person.setNum(cursor.getString(cursor.getColumnIndex("ContactNum")));
+            person.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+            person.setAddress(cursor.getString(cursor.getColumnIndex("Address")));
+            person.setHealthStatus(cursor.getString(cursor.getColumnIndex("HealthStatus")));
+            person.setWeight((int) cursor.getDouble(cursor.getColumnIndex("Weight")));
+            person.setPassword(cursor.getString(cursor.getColumnIndex("Password")));
+
+            cursor.close();
+        }
+
+        db.close();
+        return person;
     }
+
+    @SuppressLint("NewApi")
+    public boolean insertDonor(Person user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("LastDonationDate", String.valueOf(LocalDate.now()));
+        contentValues.put("PersonID", user.getId());
+        contentValues.put("DonorID", getHighestDonorId()+1);
+        long result = db.insert("Drive", null, contentValues);
+        return result != -1;
+    }
+
+    @SuppressLint("NewApi")
+    public boolean insertRecipient(Person user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("PersonID", user.getId());
+        contentValues.put("RecipientID", getHighestRecipientId()+1);
+        long result = db.insert("Recipient", null, contentValues);
+        return result != -1;
+    }
+    public boolean removeBag(int bagID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        boolean result= db.delete("BloodBag", "BagID= ?", new String[]{String.valueOf(bagID)}) > 0;
+        db.setTransactionSuccessful(); // commit the transaction
+        db.endTransaction();
+        return result;
+
+    }
+    public List<BloodBagItem> getBloodBagItemsByBloodID(String bloodID) {
+        List<BloodBagItem> bloodBagItems = new ArrayList<>();
+        List<Integer> bloodBagIDs = getBloodBagIDs(bloodID);
+
+        for (int bloodBagID : bloodBagIDs) {
+            String donorName = getDonorNameByBloodBagID(bloodBagID);
+            BloodBagItem bloodBagItem = new BloodBagItem(donorName, bloodBagID);
+            bloodBagItems.add(bloodBagItem);
+        }
+        Log.d("BAGS", bloodBagItems.toString()+"\n"+bloodID);
+        return bloodBagItems;
+    }
+
+    @SuppressLint("Range")
+    private String getDonorNameByBloodBagID(int bloodBagID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT p.fname, p.lname " +
+                "FROM Donor d " +
+                "JOIN Person p ON d.PersonID = p.personID " +
+                "WHERE d.DonorID = (SELECT DonorID FROM BloodBag WHERE BagID = ?)";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(bloodBagID)});
+
+        String donorName = "";
+
+        if (cursor != null && cursor.moveToFirst()) {
+            donorName = cursor.getString(cursor.getColumnIndex("fname")) + " " +
+                    cursor.getString(cursor.getColumnIndex("lname"));
+
+            // Close the cursor
+            cursor.close();
+        }
+
+        // Close the database
+        db.close();
+
+        return donorName;
+    }
+
+    @SuppressLint("Range")
+    public List<Integer> getBloodBagIDs(String bloodID) {
+        List<Integer> bloodBagIDs = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT BagID FROM BloodBag WHERE Blood_ID = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{bloodID});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                int bloodBagID = cursor.getInt(cursor.getColumnIndex("BagID"));
+                bloodBagIDs.add(bloodBagID);
+            } while (cursor.moveToNext());
+
+            // Close the cursor
+            cursor.close();
+        }
+
+        // Close the database
+        db.close();
+
+        return bloodBagIDs;
+    }
+
     public boolean initiateBloodDrive(Drive drive) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -252,10 +452,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("DriveID", drive.getId());
         long result = db.insert("Drive", null, contentValues);
         return result != -1;
-    }
-    public void generateReport() {
-//This should return the Reports(Cursor method)
-
     }
 
 //Reports
@@ -281,36 +477,9 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
         contentValues.put("Id", request.getId());
         contentValues.put("PersonId", request.getPersonID());
         contentValues.put("Status", request.getStatus());
-        long result = db.insert("Request", null, contentValues);
+        long result = db.insert("BloodRequestRecieve", null, contentValues);
         return result != -1;
 
-    }
-    public ArrayList<Request> listRequest() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT Request.requestid, Request.status, Person.fname, BloodType.PositveOrNegtive, BloodType.BloodGroup " +
-                "FROM Request " +
-                "INNER JOIN Person ON Request.PersonId = Person.personID " +
-                "INNER JOIN BloodType ON PersonBloodType.BloodId = BloodType.BloodID";
-        //This also needs to be rewritten completely
-        Cursor cursor = db.rawQuery(query, null);
-
-        ArrayList<Request> resultList = new ArrayList<>();
-
-        if (cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(0);
-                int personID = cursor.getInt(1);
-                String fname = cursor.getString(2);
-                String status = cursor.getString(3);
-                String bloodType = cursor.getString(4) + " " + cursor.getString(5);
-                Request request = new Request(id, personID, fname, status, bloodType);
-                resultList.add(request);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        return resultList;
     }
     //login
     public Person loginUser(String email, String password) {
@@ -342,6 +511,40 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
             return null;
         }
     }
+    // Get the number of donations for a given PersonID
+    public int getDonationNum(int personID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+
+        // Query to get the count of entries with the given PersonID in the Donor table
+        String query = "SELECT COUNT(*) FROM Donor WHERE PersonID = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(personID)});
+
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        return count;
+    }
+
+    // Get the number of receipts for a given PersonID
+    public int getReceiveNum(int personID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+
+        // Query to get the count of entries with the given PersonID in the Recipient table
+        String query = "SELECT COUNT(*) FROM Recipient WHERE PersonID = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(personID)});
+
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        return count;
+    }
+
     public String getBloodInfoForPerson(int personId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM PersonBloodType WHERE PersonID = ?";
@@ -372,10 +575,116 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
         cursor.close();
         return null;
     }
+    public ArrayList<DonorItem> getAllDonors() {
+        ArrayList<DonorItem> donorList = new ArrayList<>();
+
+        // SQL query to select data from Donor table and join with Person table
+        String query = "SELECT Person.fname, Person.lname, Donor.LastDonationDate FROM Donor " +
+                "INNER JOIN Person ON Donor.PersonID = Person.personID";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Iterate through the result set and create DonorItem objects
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String firstName = cursor.getString(cursor.getColumnIndex("fname"));
+                @SuppressLint("Range") String lastName = cursor.getString(cursor.getColumnIndex("lname"));
+                @SuppressLint("Range") String lastDonationDate = cursor.getString(cursor.getColumnIndex("LastDonationDate"));
+
+                DonorItem donorItem = new DonorItem(firstName, lastName, lastDonationDate);
+                donorList.add(donorItem);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return donorList;
+    }
 
 
-// Add the getBloodInfoForPerson method here
+    public ArrayList<Drive> getAllDrives() {
+        ArrayList<Drive> driveList = new ArrayList<>();
+
+        // SQL query to select all columns from Drive table
+        String query = "SELECT * FROM Drive";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Iterate through the result set and create Drive objects
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex("Date"));
+                @SuppressLint("Range") String location = cursor.getString(cursor.getColumnIndex("Location"));
+                @SuppressLint("Range") int driveID = cursor.getInt(cursor.getColumnIndex("DriveID"));
+
+                Drive drive = new Drive(date, location, driveID);
+                driveList.add(drive);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return driveList;
+    }
 
 
+    // Method to get an array of BloodTypeItem objects for populating the pie chart
+    public ArrayList<BloodTypeItem> getBloodTypeCounts() {
+        ArrayList<BloodTypeItem> bloodTypeList = new ArrayList<>();
+
+        // SQL query to count occurrences of each BloodID in BloodBag table
+        String query = "SELECT Blood_ID, COUNT(*) AS Count FROM BloodBag GROUP BY Blood_ID";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Iterate through the result set and create BloodTypeItem objects
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String bloodID = cursor.getString(cursor.getColumnIndex("Blood_ID"));
+                @SuppressLint("Range") int count = cursor.getInt(cursor.getColumnIndex("Count"));
+
+                BloodTypeItem bloodTypeItem = new BloodTypeItem(Integer.parseInt(bloodID), count);
+                bloodTypeList.add(bloodTypeItem);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return bloodTypeList;
+    }
+    @SuppressLint("Range")
+    public String getLastDonationDate(int personID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String lastDonationDate = null;
+
+        String query = "SELECT LastDonationDate FROM Donor WHERE PersonID = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(personID)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            lastDonationDate = cursor.getString(cursor.getColumnIndex("LastDonationDate"));
+            cursor.close();
+        }
+
+        return lastDonationDate;
+    }
+    @SuppressLint("Range")
+    public String getStatus(int personID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String status = null;
+
+        String query = "SELECT Status FROM BloodRequestRecive WHERE PersonID = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(personID)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            status = cursor.getString(cursor.getColumnIndex("Status"));
+            cursor.close();
+        }
+
+        return status;
+
+    }
 
 }

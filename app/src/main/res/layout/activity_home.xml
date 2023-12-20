@@ -1,17 +1,22 @@
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#CCDDE5">
 
-    <!-- Logo and Text -->
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/logo_z" />
+        android:background="#CCDDE5">
+
+    <!-- Logo and Text -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="130dp"
+            android:layout_height="160dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/logo_z" />
 
     <TextView
         android:id="@+id/textView"
@@ -146,7 +151,8 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:background="?android:attr/selectableItemBackground"
-                android:src="@drawable/recieve"/>
+                android:src="@drawable/recieve"
+                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -168,7 +174,56 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <!-- Button 5: Profile -->
+        <!-- Button 5: Add/Remove Users -->
+        <LinearLayout
+            android:id="@+id/Profile1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="16dp">
 
+            <ImageButton
+                android:id="@+id/Profile"
+                android:layout_width="65dp"
+                android:layout_height="63dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/rectangle"
+                android:scaleType="fitCenter"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manage Users"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Button 6: Search Users -->
+        <LinearLayout
+            android:id="@+id/layoutSearchUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+
+            <ImageButton
+                android:id="@+id/btnSearchUsers"
+                android:layout_width="66dp"
+                android:layout_height="60dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:scaleType="fitCenter"
+                android:src="@drawable/search" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Search Users"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
+</ScrollView>

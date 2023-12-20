@@ -1,5 +1,9 @@
 package com.example.blooddonationapp;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +13,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Toast;
 
 
-public class SignupActivity extends AppCompatActivity {
+public class AddActivity extends AppCompatActivity {
 
     private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText,
             phoneNumberEditText, dateOfBirthEditText, addressEditText, weightEditText;
@@ -23,7 +27,7 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.add);
 
         // Initialize  UI elements
         firstNameEditText = findViewById(R.id.fname);
@@ -38,13 +42,12 @@ public class SignupActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         ImageButton goBackButton = (ImageButton) findViewById(R.id.goBackButton);
         haveAccountText = findViewById(R.id.haveAccountText);
-        signInText = findViewById(R.id.signInText);
 
         // Set click listeners
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goBackToMainActivity();
+                goBack();
             }
         });
 
@@ -55,16 +58,19 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        signInText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToLoginActivity();
-            }
-        });
+
     }
 
-    private void goBackToMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void goBack() {
+        Intent intent=getIntent();
+        Person user=null;
+        if (intent != null) {
+            user = (Person) intent.getSerializableExtra("User");
+        }
+        // Set click listeners for buttons
+        Person finalUser = user;
+         intent = new Intent(this, AddRemoveActivity.class);
+         intent.putExtra("User",finalUser);
         startActivity(intent);
         finish(); // Optional: Close the current activity
     }
@@ -95,13 +101,16 @@ public class SignupActivity extends AppCompatActivity {
 
             // Use the DatabaseHelper to add the user
             boolean result=dbHelper.addUser(person);
-            Log.d("Check", String.valueOf(result));
+            if(result)
+                Toast.makeText(this, "User has been Created", Toast.LENGTH_SHORT).show();
 
-            // Navigate to the MainPage (you need to replace MainPage with your actual activity)
             Intent intent = new Intent(this, AdminPage.class);
             startActivity(intent);
             finish(); // Optional: Close the current activity
         }
+        else
+            Toast.makeText(this, "Fill All the Information", Toast.LENGTH_SHORT).show();
+
     }
 
     private boolean areAllFieldsFilled() {
@@ -118,11 +127,7 @@ public class SignupActivity extends AppCompatActivity {
         );
     }
 
-    private void goToLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish(); // Optional: Close the current activity
-    }
 
 }
+
 

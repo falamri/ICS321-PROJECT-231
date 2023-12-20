@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="WrongFolder">
+
+    <color android:name="colorBloodTypeAPlus"
+        tools:ignore="ExtraText">#FFA07A</color> <!-- Light Salmon -->
+    <color android:name="colorBloodTypeAMinus">#FF6347</color> <!-- Tomato -->
+    <color android:name="colorBloodTypeBPlus">#00CED1</color> <!-- Dark Turquoise -->
+    <color android:name="colorBloodTypeBMinus">#1E90FF</color> <!-- Dodger Blue -->
+    <color android:name="colorBloodTypeOPlus">#FF4500</color> <!-- Orange Red -->
+    <color android:name="colorBloodTypeOMinus">#FF0000</color> <!-- Red -->
+    <color android:name="colorBloodTypeABPlus">#8A2BE2</color> <!-- Blue Violet -->
+    <color android:name="colorBloodTypeABMinus">#4B0082</color> <!-- Indigo -->
+
+</resources>

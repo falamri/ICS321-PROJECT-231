@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -42,14 +43,21 @@ public class LoginActivity extends AppCompatActivity {
         String enteredPassword = editTextPassword.getText().toString();
 
         DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
-        if (dbHelper.loginUser(enteredEmail, enteredPassword)!=null) {
-            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-
-        } else {
-
-            // Show an error message or handle unsuccessful login
-            // You may display a Toast, set an error message on the UI, etc.
-        }
+        Person user =dbHelper.loginUser(enteredEmail, enteredPassword);
+        if (user!=null) {
+            if(dbHelper.isAdmin(enteredEmail,enteredPassword)) {
+                Intent intent = new Intent(LoginActivity.this, AdminPage.class);
+                intent.putExtra("User", user);
+                startActivity(intent);
+            }
+            else{
+                Intent intent = new Intent(LoginActivity.this, UserPage.class);
+                intent.putExtra("User", user);
+                startActivity(intent);
+            }
+            }
+         else {
+            Toast.makeText(this, "Email or Password are incorrect", Toast.LENGTH_SHORT).show();}
 
     }
     private void makeTextViewHyperlink(TextView textView) {
