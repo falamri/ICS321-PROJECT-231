@@ -123,19 +123,23 @@
                 android:layout_below="@id/textViewWeight"
                 android:text="Blood Type: O+" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textViewDonationNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textViewBloodType"
-                android:text="Donation Number: 5" />
+                android:text="Donation Number: 5"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textViewReceiveNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textViewDonationNum"
-                android:text="Receive Number: 3" />
+                android:text="Receive Number: 3"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/editButton"

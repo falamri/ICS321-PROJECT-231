@@ -22,8 +22,8 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText etAddress;
     private EditText etWeight;
     private EditText etBloodType;
-    private EditText etDonationNum;
-    private EditText etReceiveNum;
+    private TextView etDonationNum;
+    private TextView etReceiveNum;
     private EditText etPassword;
     private EditText etEmail;
     private Button editBtn;
@@ -83,8 +83,8 @@ public class ProfileActivity extends AppCompatActivity {
         etAddress.setText(user.getAddress());
         etWeight.setText(String.valueOf(user.getWeight()));
         etBloodType.setText(user.getBloodType());
-        etDonationNum.setText(String.valueOf(userProfile.getDonationNum()));
-        etReceiveNum.setText(String.valueOf(userProfile.getReceiveNum()));
+        etDonationNum.setText(String.valueOf("Number of Donations: "+userProfile.getDonationNum()));
+        etReceiveNum.setText(String.valueOf("Number of blood bags Received: "+ userProfile.getReceiveNum()));
         etPassword.setText(user.getPassword());
         etEmail.setText(user.getEmail());
 

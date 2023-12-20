@@ -8,10 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,7 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d("Database Connection", "Database is successfully opened");
 
             // Example: Query and print data from the "Donors" table
-            printDonorData(db);
+            printPersonData(db);
 
         } catch (SQLiteException e) {
             Log.e("Database Connection", "Could not open the database", e);
@@ -152,7 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return highestId;
     }
 
-    public void printDonorData(SQLiteDatabase db) {
+    public void printPersonData(SQLiteDatabase db) {
         String query = "SELECT * FROM Person";
         Cursor cursor = db.rawQuery(query, null);
 
@@ -245,7 +243,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.endTransaction();
             }
 
-            printDonorData(db);
+
 
             return personId != -1 && bloodTypeResult != -1;
         } catch (SQLiteException e) {
@@ -317,17 +315,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.endTransaction();
         return result;
     }
-    public Cursor searchUserHistory(int userId) {
-        SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT Person.personID, Person.fname,Person.lname, Donor.DonorID,Donor.LastDonationDate, Recipient.RecipientID " +
-                "FROM Person " +
-                "LEFT JOIN Donor ON Person.personID = Donor.PersonID " +
-                "LEFT JOIN Recipient ON Person.personID = Recipient.PersonID " +
-                "WHERE Person.personID = ?";
-
-        return db.rawQuery(query, new String[]{String.valueOf(userId)});
-    }
     @SuppressLint("Range")
     public Person getPersonById(int personId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -465,10 +453,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert("Drive", null, contentValues);
         return result != -1;
     }
-    public void generateReport() {
-//This should return the Reports(Cursor method)
-
-    }
 
 //Reports
 public Cursor getDonationsInPeriod(String startDate, String endDate) {
@@ -496,33 +480,6 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
         long result = db.insert("BloodRequestRecieve", null, contentValues);
         return result != -1;
 
-    }
-    public ArrayList<Request> listRequest() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT BloodRequestRecieve.Id, BloodRequestRecieve.Status, Person.fname, BloodType.PostiveOrNegtive, BloodType.BloodGroup " +
-                "FROM Request " +
-                "INNER JOIN Person ON BloodRequestRecieve.PersonId = Person.personID " +
-                "INNER JOIN BloodType ON PersonBloodType.BloodId = BloodType.BloodID";
-        //This also needs to be rewritten completely
-        Cursor cursor = db.rawQuery(query, null);
-
-        ArrayList<Request> resultList = new ArrayList<>();
-
-        if (cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(0);
-                int personID = cursor.getInt(1);
-                String fname = cursor.getString(2);
-                String status = cursor.getString(3);
-                String bloodType = cursor.getString(4) + " " + cursor.getString(5);
-                Request request = new Request(id, personID, fname, status, bloodType);
-                resultList.add(request);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        return resultList;
     }
     //login
     public Person loginUser(String email, String password) {
@@ -672,7 +629,6 @@ public Cursor getDonationsInPeriod(String startDate, String endDate) {
         return driveList;
     }
 
-// Add the getBloodInfoForPerson method here
 
     // Method to get an array of BloodTypeItem objects for populating the pie chart
     public ArrayList<BloodTypeItem> getBloodTypeCounts() {
